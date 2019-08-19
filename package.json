@@ -1,0 +1,19 @@
+{
+  "name": "live-solve-sql-to-do-list",
+  "version": "1.0.0",
+  "description": "Hello Primers!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myronschippers/live-solve-sql-to-do-list.git"
+  },
+  "author": "Myron R Schippers Jr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/myronschippers/live-solve-sql-to-do-list/issues"
+  },
+  "homepage": "https://github.com/myronschippers/live-solve-sql-to-do-list#readme"
+}
