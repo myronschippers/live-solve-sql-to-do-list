@@ -1,0 +1,10 @@
+body {
+    background: skyblue;
+    font-family: 'Trebuchet', 'Arial', sans-serif;
+}
+
+h1 {
+    color: royalblue;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
