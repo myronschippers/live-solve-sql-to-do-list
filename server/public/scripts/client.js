@@ -6,6 +6,7 @@ function init() {
     // EVENT LISTENERS
     $('.js-btn-add-task').on('click', clickAddTask);
     $('.js-tasks-list').on('click', '.js-btn-delete', clickTaskDelete);
+    $('.js-tasks-list').on('click', '.js-btn-complete', clickTaskComplete);
 
     getTasks();
 }
@@ -26,6 +27,16 @@ function clickTaskDelete(event) {
     const taskId = $(this).data().id;
 
     deleteTask(taskId);
+}
+
+function clickTaskComplete(event) {
+    const taskId = $(this).data().id;
+    // .data() =
+    // {
+    //     id: '1'
+    // }
+
+    completeTask(taskId);
 }
 
 //
@@ -79,8 +90,19 @@ function deleteTask(taskId) {
     });
 }
 
-function completeTask() {
+function completeTask(taskId) {
     // make AJAX call to endpoint
+    $.ajax({
+        type: 'PUT',
+        url: `/api/tasks/complete/${taskId}`,
+    })
+    .then(function(response) {
+        getTasks();
+    })
+    .catch(function(err) {
+        console.log(err);
+        alert('There was an error completing your task.');
+    });
 }
 
 //
@@ -93,14 +115,33 @@ function render(tasksArray) {
 
     $tasksList.empty()
     for (let task of tasksArray) {
+        let btnElement = `<button
+                            class="btn btn-success js-btn-complete"
+                            data-id="${task.id}"
+                        >
+                            Complete
+                        </button>`;
+        let itemClass = 'notComplete';
+        
+        if (task.complete === 'true') {
+            itemClass = 'isComplete';
+            btnElement = `<button
+                            class="btn btn-secondary js-btn-complete"
+                            disabled
+                            data-id="${task.id}"
+                        >
+                            Complete
+                        </button>`;
+        }
+
         $tasksList.append(`
-            <li class="list-group-item">
+            <li class="list-group-item ${itemClass}">
                 <div class="row">
                     <div class="col-6">
                         ${task.description}
                     </div>
                     <div class="col-6 text-right">
-                        <button class="btn btn-success">Complete</button>
+                        ${btnElement}
                         <button
                             class="btn btn-danger js-btn-delete"
                             data-id="${task.id}"
