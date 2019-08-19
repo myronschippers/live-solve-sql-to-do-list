@@ -14,7 +14,27 @@
     <script src="scripts/client.js"></script>
 </head>
 <body>
-    <h1>Todo List</h1>
+    <div class="container mb-3">
+        <h1>Todo List</h1>
+    </div>
+
+    <div class="container mb-3">
+        <input
+            type="text"
+            placeholder="Task Description"
+            class="js-input-task"
+        />
+        <button
+            class="js-btn-add-task btn btn-primary"
+        >
+            Add Todo
+        </button>
+    </div>
+
+    <div class="container">
+        <ul class="js-tasks-list list-group">
+        </ul>
+    </div>
     
 </body>
 </html>
