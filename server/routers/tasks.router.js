@@ -16,41 +16,50 @@ router.get('/', (req, res) => {
         });
 });
 
+// tested with postman and working :)
 router.post('/', (req, res) => {
-    const queryText = `SELECT * FROM "tasks";`
+    const queryText = `INSERT INTO "tasks" ("description", "complete")
+                        VALUES ($1, $2);`
+    const taskData = req.body;
 
-    pool.query(queryText)
+    pool.query(queryText, [taskData.description, 'false'])
         .then((response) => {
-            res.send(response.rows);
+            res.sendStatus(201);
         })
         .catch((err) => {
-            console.log('GET error: ', err);
+            console.log('POST error: ', err);
             res.sendStatus(500);
         });
 });
 
-router.delete('/', (req, res) => {
-    const queryText = `SELECT * FROM "tasks";`
+// DELETE works swimmingly :) (Postman)
+router.delete('/delete/:id', (req, res) => {
+    const queryText = `DELETE FROM "tasks" WHERE "id"=$1;`
+    const taskId = req.params.id;
 
-    pool.query(queryText)
+    pool.query(queryText, [taskId])
         .then((response) => {
-            res.send(response.rows);
+            res.sendStatus(200);
         })
         .catch((err) => {
-            console.log('GET error: ', err);
+            console.log('DELETE error: ', err);
             res.sendStatus(500);
         });
 });
 
-router.put('/', (req, res) => {
-    const queryText = `SELECT * FROM "tasks";`
+// Things get completed, tested with Postman
+router.put('/complete/:id', (req, res) => {
+    const queryText = `UPDATE "tasks"
+                        SET "complete"='true'
+                        WHERE "id"=$1;`
+    const taskId = req.params.id;
 
-    pool.query(queryText)
+    pool.query(queryText, [taskId])
         .then((response) => {
-            res.send(response.rows);
+            res.sendStatus(200);
         })
         .catch((err) => {
-            console.log('GET error: ', err);
+            console.log('PUT error: ', err);
             res.sendStatus(500);
         });
 });
