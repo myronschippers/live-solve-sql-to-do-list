@@ -5,6 +5,7 @@ function init() {
 
     // EVENT LISTENERS
     $('.js-btn-add-task').on('click', clickAddTask);
+    $('.js-tasks-list').on('click', '.js-btn-delete', clickTaskDelete);
 
     getTasks();
 }
@@ -19,6 +20,12 @@ function clickAddTask(event) {
 
     $inputTask.val('');
     postNewTask(description);
+}
+
+function clickTaskDelete(event) {
+    const taskId = $(this).data().id;
+
+    deleteTask(taskId);
 }
 
 //
@@ -57,8 +64,19 @@ function getTasks() {
     });
 }
 
-function deleteTask() {
+function deleteTask(taskId) {
     // make AJAX call to endpoint
+    $.ajax({
+        type: 'DELETE',
+        url: `/api/tasks/delete/${taskId}`,
+    })
+    .then(function(response) {
+        getTasks();
+    })
+    .catch(function(err) {
+        console.log(err);
+        alert('There was an error deleting your task.');
+    });
 }
 
 function completeTask() {
@@ -83,7 +101,12 @@ function render(tasksArray) {
                     </div>
                     <div class="col-6 text-right">
                         <button class="btn btn-success">Complete</button>
-                        <button class="btn btn-danger">Delete</button>
+                        <button
+                            class="btn btn-danger js-btn-delete"
+                            data-id="${task.id}"
+                        >
+                            Delete
+                        </button>
                     </div>
                 </div>
             </li>
